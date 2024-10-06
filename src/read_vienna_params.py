@@ -10,7 +10,9 @@ from utils import NON_GC_PAIRS, RNA_ALPHA, RNA_ALPHA_IDX
 from utils import CELL_TEMP, MAX_LOOP
 from utils import all_pairs_mat, MAX_PRECOMPUTE
 
-from jax.config import config
+# from jax.config import config
+from jax import config
+
 config.update("jax_enable_x64", True)
 
 
