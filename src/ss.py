@@ -10,23 +10,25 @@ from jax import vmap, jit, grad, value_and_grad
 from jax.tree_util import Partial
 import jax.numpy as jnp
 
-import energy
-from checkpoint import checkpoint_scan
-from utils import bp_bases, HAIRPIN, N4, INVALID_BASE
-from utils import SPECIAL_HAIRPINS, SPECIAL_HAIRPIN_LENS, \
+# import energy
+from . import energy
+from .checkpoint import checkpoint_scan
+from .utils import bp_bases, HAIRPIN, N4, INVALID_BASE
+from .utils import SPECIAL_HAIRPINS, SPECIAL_HAIRPIN_LENS, \
     SPECIAL_HAIRPIN_IDXS, N_SPECIAL_HAIRPINS, SPECIAL_HAIRPIN_START_POS
-from utils import matching_to_db
-from utils import MAX_PRECOMPUTE, MAX_LOOP
-import brute_force
-import nussinov as nus
+from .utils import matching_to_db
+from .utils import MAX_PRECOMPUTE, MAX_LOOP
+from . import brute_force
+from . import nussinov as nus
 
-import dp_discrete
-from utils import get_rand_seq, seq_to_one_hot
-import vienna
-import vienna_rna
+from . import dp_discrete
+from .utils import get_rand_seq, seq_to_one_hot
+from . import vienna
+from . import vienna_rna
 
 
-from jax.config import config
+# from jax.config import config
+from jax import config
 config.update("jax_enable_x64", True)
 
 

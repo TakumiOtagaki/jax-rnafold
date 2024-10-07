@@ -1,9 +1,9 @@
 import unittest
-from utils import ALL_PAIRS, RNA_ALPHA, NTS, NBPS, HAIRPIN, SPECIAL_HAIRPINS, INVALID_BASE
-import energy
+from .utils import ALL_PAIRS, RNA_ALPHA, NTS, NBPS, HAIRPIN, SPECIAL_HAIRPINS, INVALID_BASE
+from . import energy
 import numpy as np
-import utils as common
-import brute_force
+from . import utils as common
+from . import brute_force
 
 
 def get_bp_bases(bp):

@@ -1,6 +1,6 @@
-from utils import ALL_PAIRS, RNA_ALPHA, NTS, HAIRPIN
+from .utils import ALL_PAIRS, RNA_ALPHA, NTS, HAIRPIN
 import numpy as np
-import brute_force
+from . import brute_force
 
 
 def make_valid_pairs_table():

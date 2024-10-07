@@ -8,14 +8,14 @@ import jax.numpy as jnp
 from jax import config
 config.update("jax_enable_x64", True)
 
-from utils import RNA_ALPHA, INVALID_BASE, RNA_ALPHA_IDX
-from utils import SPECIAL_HAIRPINS, N_SPECIAL_HAIRPINS, VALID_PAIRS
-from utils import boltz_onp, boltz_jnp
-from utils import MAX_LOOP, NON_GC_PAIRS, kb, CELL_TEMP
-from utils import all_pairs_mat, non_gc_pairs_mat
-import utils
+from .utils import RNA_ALPHA, INVALID_BASE, RNA_ALPHA_IDX
+from .utils import SPECIAL_HAIRPINS, N_SPECIAL_HAIRPINS, VALID_PAIRS
+from .utils import boltz_onp, boltz_jnp
+from .utils import MAX_LOOP, NON_GC_PAIRS, kb, CELL_TEMP
+from .utils import all_pairs_mat, non_gc_pairs_mat
+from . import utils
 
-import read_vienna_params
+from . import read_vienna_params
 
 
 vienna_params = read_vienna_params.read(postprocess=False)

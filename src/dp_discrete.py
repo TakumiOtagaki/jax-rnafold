@@ -7,12 +7,13 @@ from jax import grad, jit, value_and_grad, vmap
 import jax
 from jax.tree_util import Partial
 
-import read_vienna_params
-from utils import HAIRPIN, MAX_LOOP
-from utils import bcolors, CELL_TEMP, kb, R, NON_GC_PAIRS, VALID_PAIRS
-from utils import boltz_onp
+from . import read_vienna_params
+from .utils import HAIRPIN, MAX_LOOP
+from .utils import bcolors, CELL_TEMP, kb, R, NON_GC_PAIRS, VALID_PAIRS
+from .utils import boltz_onp
 
-from jax.config import config
+# from jax.config import config
+from jax import config
 config.update("jax_enable_x64", True)
 
 
