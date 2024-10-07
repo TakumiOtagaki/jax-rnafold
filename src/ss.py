@@ -513,7 +513,7 @@ def get_ss_partition_fn(em, seq_len, max_loop=MAX_LOOP):
         get_all_fin_summands = vmap(vmap(get_fin_summand, (None, 0)), (0, None))
         all_fin_summands = get_all_fin_summands(N4, N4)
         fin_sm = jnp.sum(all_fin_summands)
-        return fin_sm
+        return fin_sm, E, ML, P
 
     return ss_partition
 
