@@ -12,3 +12,4 @@ Please use refer to the following DOI's for appropriately citing this work:
 - This codebase: [![DOI](https://zenodo.org/badge/593600922.svg)](https://zenodo.org/badge/latestdoi/593600922)
 - Our bioRxiv paper: [![DOI:10.1101/2023.01.30.526001](http://img.shields.io/badge/DOI-10.1101/2023.01.30.526001-B31B1B.svg)](https://doi.org/10.1101/2023.01.30.526001)
 
+# jax-bpp
