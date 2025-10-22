@@ -459,6 +459,7 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
                                       (OMM, P, ML, MB, E),
                                       jnp.arange(seq_len-1, -1, -1))
 
-        return E[0]
+        # return E[0]
+        return E[0], (OMM, P, ML, MB, E) # ここだけ変更, 2025-10-22
 
     return ss_partition
