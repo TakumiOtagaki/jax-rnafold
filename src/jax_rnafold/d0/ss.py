@@ -281,7 +281,7 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
                 z_b_sm = 0.0
 
                 l = j-3-z_offset
-                l_cond = (l >= i+3)
+                l_cond = (l >= i+3)  & (1 + j - l - 1 <= two_loop_length) & (l - (i + 2) - 1 >= em.hairpin) # two_loop_length check added by Takumi Otagaki, 2025-11-07
                 il_en = em.en_internal(
                      bi, bj, bk, bl, bip1, bjm1, bip1, b, 1, j-l-1)
                 right_term = P[bp_idx, i+2, l]*padded_p_seq[i+2, bk] \
@@ -290,7 +290,7 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
                 z_b_sm += jnp.where(l_cond, right_term, 0.0)
 
                 k = i+3+z_offset
-                k_cond = (k < j-2)
+                k_cond = (k < j-2) & (k - i - 1 + 1 <= two_loop_length) & (j - 2 - k >= em.hairpin) # two_loop_length check added by Takumi Otagaki, 2025-11-07
                 il_en = em.en_internal(
                      bi, bj, bk, bl, bip1, bjm1, b, bjm1, k-i-1, 1)
                 left_term = P[bp_idx, k, j-2]*padded_p_seq[k, bk] \
@@ -326,7 +326,8 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
                 | ((lup == 2) & (rup == 3)) \
                 | ((lup == 3) & (rup == 2))
             cond_idx = (k < j-2) & (l >= k+1)
-            cond = cond_lup_rup & cond_idx
+            cond_min_hairpin =  (l - k - 1 >= em.hairpin)
+            cond = cond_lup_rup & cond_idx & cond_min_hairpin
 
 
             def get_bp_22_23_32_summand(bip1, bjm1, bkm1, blp1):
@@ -361,7 +362,9 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
             is_22_23_32 = ((lup == 2) & (rup == 2)) \
                           | ((lup == 2) & (rup == 3)) \
                           | ((lup == 3) & (rup == 2))
-            cond = idx_cond & is_not_n1 & ~is_22_23_32
+            cond_len = (lup + rup <= two_loop_length) # added by Takumi Otagaki, 2025-11-07
+            cond_min_hairpin =  (l - k - 1 >= em.hairpin)
+            cond = idx_cond & is_not_n1 & ~is_22_23_32 & cond_len & cond_min_hairpin # added cond_len by Takumi Otagaki, 2025-11-07
 
             general_term = em.en_internal_init(lup+rup) * em.en_internal_asym(lup, rup) \
                            * OMM[k, l] * mmij * s_table[lup+rup+2]
