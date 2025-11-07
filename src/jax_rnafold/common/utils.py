@@ -2,7 +2,7 @@
 
   The following utility functions are used to convert between discrete and probabilistic sequences, convert between formats for RNA structures, and define unit conversions.
 """
-import pkg_resources
+import importlib.resources as importlib_resources
 import pdb
 import numpy as onp
 import random
@@ -241,7 +241,7 @@ def structure_tree(db):
 
 
 # Parameter paths
-DATA_BASEDIR = Path(pkg_resources.resource_filename("jax_rnafold", "data"))
+DATA_BASEDIR = Path(importlib_resources.files("jax_rnafold") / "data")
 THERMO_PARAMS_DIR = DATA_BASEDIR / "thermo-params"
 TURNER_2004 = THERMO_PARAMS_DIR / "rna_turner2004.par"
 TURNER_1999 = THERMO_PARAMS_DIR / "rna_turner1999.par"
