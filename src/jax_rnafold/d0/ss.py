@@ -416,7 +416,7 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
     def fill_multi(i, padded_p_seq, ML, MB):
         def nb_j_fn(nb, j):
             nb_j_cond = (j >= i) & (j < seq_len)
-            nb_j_sm = ML[nb, i+1, j] * s_table[1]
+            nb_j_sm = ML[nb, i+1, j] * s_table[1] * em.en_multi_unpaired()  # 2025-11-05 update by Takumi Otagaki (added "* em.en_multi_unpaired()")
 
             idx = jnp.where(nb-1 > 0, nb-1, 0)
             def k_fn(k):
