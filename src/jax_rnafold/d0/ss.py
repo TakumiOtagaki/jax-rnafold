@@ -389,7 +389,8 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
             bp = bp_bases[bp_idx]
             bi = bp[0]
             bj = bp[1]
-            sm = psum_hairpin(bi, bj, i, j, padded_p_seq) * s_table[j-i-1]
+            sm = psum_hairpin(bi, bj, i, j, padded_p_seq) * s_table[j-i+1] 
+            # * s_table[j-i-1]  # 2025-11-05 update by Takumi Otagaki; changed from s_table[j-i-1] to s_table[j-i+1]
             sm += psum_bulges(bi, bj, i, j, padded_p_seq, P)
             sm += psum_internal_loops(bi, bj, i, j, padded_p_seq, P, OMM)
 
