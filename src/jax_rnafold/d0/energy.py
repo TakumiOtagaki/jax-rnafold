@@ -461,8 +461,9 @@ class StandardNNModel(Model):
         return boltz_onp(en, t=self.temp)
 
     def en_il_outer_mismatch(self, bi, bj, bim1, bjp1):
-        pair = RNA_ALPHA[bj] + RNA_ALPHA[bi]
-        return boltz_onp(self.nn_params.params['mismatch_interior'][pair][RNA_ALPHA[bjp1] + RNA_ALPHA[bim1]], t=self.temp)
+        # pair = RNA_ALPHA[bj] + RNA_ALPHA[bi] 
+        pair = RNA_ALPHA[bi] + RNA_ALPHA[bj] # FIXED: swapped bi and bj, by Takumi Otagaki, 2025-11-07
+        return boltz_onp(self.nn_params.params['mismatch_interior'][pair][RNA_ALPHA[bim1] + RNA_ALPHA[bjp1]], t=self.temp) # FIXED: swapped bim1 and bjp1, by Takumi Otagaki, 2025-11-07
 
     def _en_internal_init(self, sz):
         return self.nn_params.params['interior'][sz] # FIXME: check against MAX_LOOP
@@ -617,7 +618,8 @@ class JaxNNModel(Model):
                                           mm_table=self.nn_params.params["mismatch_interior"])
 
     def _en_il_outer_mismatch(self, bi, bj, bim1, bjp1, mm_table):
-        return boltz_jnp(mm_table[bj, bi, bjp1, bim1], t=self.temp)
+        # return boltz_jnp(mm_table[bj, bi, bjp1, bim1], t=self.temp)
+        return boltz_jnp(mm_table[bi, bj, bim1, bjp1], t=self.temp) # FIXED: swapped bi and bj, bjp1, bim1, by Takumi Otagaki, 2025-11-07
     def en_il_outer_mismatch(self, bi, bj, bim1, bjp1):
         return self._en_il_outer_mismatch(bi, bj, bim1, bjp1,
                                           mm_table=self.nn_params.params["mismatch_interior"])
