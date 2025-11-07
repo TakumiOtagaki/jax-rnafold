@@ -62,7 +62,8 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
             bi = bp[0]
             bj = bp[1]
             base_en = E[j+1]*padded_p_seq[i, bi]*padded_p_seq[j, bj]
-            return jnp.where(cond, base_en*P[bp_idx, i, j]*em.en_ext_branch(bi, bj)*s_table[2], 0.0)
+            # return jnp.where(cond, base_en*P[bp_idx, i, j]*em.en_ext_branch(bi, bj)*s_table[2], 0.0)
+            return jnp.where(cond, base_en*P[bp_idx, i, j]*em.en_ext_branch(bi, bj), 0.0)
         get_all_terms = vmap(vmap(get_j_bp_term, (0, None)), (None, 0))
 
         sm = E[i+1]*s_table[1] + jnp.sum(get_all_terms(jnp.arange(seq_len), jnp.arange(NBPS)))
@@ -105,7 +106,8 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
             bi = bp[0]
             bj = bp[1]
             return P[bp_idx, i, j] * em.en_multi_branch(bi, bj) \
-                * padded_p_seq[i, bi] * padded_p_seq[j, bj] * s_table[2]
+                * padded_p_seq[i, bi] * padded_p_seq[j, bj] \
+                    #   * s_table[2] # comment out by Takumi Otagaki, 2025-11-07
         compute_all_terms = vmap(compute_term, (None, 0))
 
         @jit
@@ -396,7 +398,7 @@ def get_ss_partition_fn(em: energy.Model, seq_len: int, max_loop: int = MAX_LOOP
             sm += jnp.sum(stack_summands) * s_table[2]
 
             # Multi-loops
-            sm += em.en_multi_closing(bi, bj)*ML[2, i+1, j-1]
+            sm += em.en_multi_closing(bi, bj)*ML[2, i+1, j-1] * s_table[2]  # 2025-11-05 update by Takumi Otagaki; added "* s_table[2]"
 
             cond = (j >= i+em.hairpin+1) & (j < seq_len)
             return jnp.where(cond, sm, P[bp_idx, i, j])
